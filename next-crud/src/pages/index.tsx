@@ -10,6 +10,14 @@ export default function Home() {
     new Cliente('Leo', 35, '3'),
     new Cliente('Vivi', 26, '4')
   ]
+
+  function clienteAlterado(cliente: Cliente){
+    console.log(cliente.nome)
+  }
+
+  function clienteExcluido(cliente: Cliente){
+    console.log(`Excluido... ${cliente.nome}`)
+  }
   
   return (
     <h1 className={`
@@ -18,7 +26,10 @@ export default function Home() {
       text-white
     `}>
       <Layout titulo="Cadastro Simples">
-        <Tabela clientes={clientes}></Tabela>
+        <Tabela clientes={clientes} 
+                clienteAlterado={clienteAlterado}
+                clienteExcluido={clienteExcluido}
+        />
       </Layout>
     </h1>
   )
