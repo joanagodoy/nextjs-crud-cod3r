@@ -1,4 +1,5 @@
 import Botao from '../components/Botao'
+import Formulario from '../components/Formulario'
 import Layout from '../components/Layout'
 import Tabela from '../components/Tabela'
 import Cliente from '../core/Cliente'
@@ -28,10 +29,11 @@ export default function Home() {
     `}>
       <Layout titulo="Cadastro Simples">
         <Botao cor="green" className="mb-4" >Novo Cliente</Botao>
-        <Tabela clientes={clientes} 
+        {/* <Tabela clientes={clientes} 
                 clienteAlterado={clienteAlterado}
                 clienteExcluido={clienteExcluido}
-        />
+        /> */}
+        <Formulario cliente={clientes[0]}/>
       </Layout>
     </h1>
   )
