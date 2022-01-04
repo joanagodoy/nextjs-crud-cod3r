@@ -1,6 +1,6 @@
 export default class Cliente{
     #id: string
-    #nome: String
+    #nome: string
     #idade: number
 
     constructor(nome: string, idade: number, id: string = null){

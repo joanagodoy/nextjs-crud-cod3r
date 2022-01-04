@@ -6,6 +6,7 @@ interface TabelaProps{
     clientes: Cliente[],
     clienteAlterado?: (cliente: Cliente) => void,
     clienteExcluido?: (cliente: Cliente) => void
+    onClick?: () => void
 }
 
 export default function Tabela(props: TabelaProps){
