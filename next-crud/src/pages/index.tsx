@@ -6,7 +6,8 @@ import Tabela from '../components/Tabela'
 import Cliente from '../core/Cliente'
 
 export default function Home() {
-
+  const [visivel, setVisivel] = useState<'tabela' | 'formulario'>('tabela') 
+  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
   const clientes = [
     new Cliente('Joana', 26, '1'),
     new Cliente('Shalom', 30, '2'),
@@ -15,7 +16,8 @@ export default function Home() {
   ]
 
   function clienteAlterado(cliente: Cliente){
-    console.log(cliente.nome)
+    setCliente(cliente)
+    setVisivel('formulario')
   }
 
   function clienteExcluido(cliente: Cliente){
@@ -26,8 +28,11 @@ export default function Home() {
     console.log(cliente);
   }
 
-  const [visivel, setVisivel] = useState<'tabela' | 'formulario'>('tabela') 
-  
+  function novoCliente(){
+    setCliente(Cliente.vazio())
+    setVisivel('formulario')
+  }
+
   return (
     <h1 className={`
       flex justify-center items-center h-screen
@@ -35,7 +40,7 @@ export default function Home() {
       text-white
     `}>
       <Layout titulo="Cadastro Simples">
-        <Botao cor="green" className="mb-4" onClick={() => setVisivel('formulario')}>Novo Cliente</Botao>
+        <Botao cor="green" className="mb-4" onClick={novoCliente}>Novo Cliente</Botao>
         {visivel === 'tabela' ? (
           <Tabela clientes={clientes} 
                 clienteAlterado={clienteAlterado}
@@ -43,7 +48,7 @@ export default function Home() {
           />
         ) : (
           <Formulario 
-            cliente={clientes[0]}
+            cliente={cliente}
             clienteMudou={salvarCliente}
             cancelado={() => setVisivel('tabela')}
           />
