@@ -16,13 +16,13 @@ export default class ColecaoCliente implements ClienteRepositorio{
             return new Cliente(dados.nome, dados.idade, snapshot?.id)
         }
     }
-
     async salvar(cliente: Cliente): Promise<Cliente> {
+        console.log(cliente)
         if(cliente?.id){
             await this.colecao().doc(cliente.id).set(cliente)
             return cliente
         }else{
-            const docRef = this.colecao().add(cliente)
+            const docRef = await this.colecao().add(cliente)
             const doc = await docRef.get()
             return doc.data()
         }
@@ -37,7 +37,7 @@ export default class ColecaoCliente implements ClienteRepositorio{
 
     private colecao() {
         return firebase
-            .firestore.collection('clientes')
+            .firestore().collection('clientes')
             .withConverter(this.#conversor)
     }
 
