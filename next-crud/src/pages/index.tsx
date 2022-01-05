@@ -1,52 +1,23 @@
-import { useEffect, useState } from 'react'
-import ColecaoCliente from '../backend/db/ColecaoCliente'
 import Botao from '../components/Botao'
 import Formulario from '../components/Formulario'
 import Layout from '../components/Layout'
 import Tabela from '../components/Tabela'
-import Cliente from '../core/Cliente'
-import ClienteRepositorio from '../core/ClienteRepositorio'
+import useClientes from '../hooks/useClientes'
 
 export default function Home() {
   
-  const repo: ClienteRepositorio = new ColecaoCliente();
+  const { 
+    novoCliente, 
+    clienteAlterado, 
+    clienteExcluido, 
+    salvarCliente,
+    cliente,
+    clientes,
+    tabelaVisivel,
+    exibirTabela
   
-  const [visivel, setVisivel] = useState<'tabela' | 'formulario'>('tabela') 
-  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
-  const [clientes, setClientes] = useState<Cliente[]>([])
-
-  useEffect(() => {
-    obterTodos()
-  }, [])
-
-  function obterTodos(){
-    console.log("obtertodos")
-    repo.obterTodos().then(clientes => {
-      setClientes(clientes)
-      setVisivel('tabela')
-    })
-  }
-
-  function clienteAlterado(cliente: Cliente){
-    setCliente(cliente)
-    setVisivel('formulario')
-  }
-
-  function clienteExcluido(cliente: Cliente){
-    repo.excluir(cliente)
-    obterTodos()
-  }
-
-  async function salvarCliente(cliente: Cliente){
-    await repo.salvar(cliente)
-    obterTodos()
-  }
-
-  function novoCliente(){
-    setCliente(Cliente.vazio())
-    setVisivel('formulario')
-  }
-
+  } = useClientes();
+  
   return (
     <h1 className={`
       flex justify-center items-center h-screen
@@ -55,7 +26,7 @@ export default function Home() {
     `}>
       <Layout titulo="Cadastro Simples">
         <Botao cor="green" className="mb-4" onClick={novoCliente}>Novo Cliente</Botao>
-        {visivel === 'tabela' ? (
+        {tabelaVisivel ? (
           <Tabela clientes={clientes} 
                 clienteAlterado={clienteAlterado}
                 clienteExcluido={clienteExcluido}
@@ -64,7 +35,7 @@ export default function Home() {
           <Formulario 
             cliente={cliente}
             clienteMudou={salvarCliente}
-            cancelado={() => setVisivel('tabela')}
+            cancelado={exibirTabela}
           />
         )}
       </Layout>
